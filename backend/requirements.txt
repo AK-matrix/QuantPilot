@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+yfinance
+pandas
+pandas_ta
+beautifulsoup4
+requests
+chromadb
+python-multipart
+# For PDF/Unstructured text if needed later, but keeping lightweight for MVP
+# unstructured 
