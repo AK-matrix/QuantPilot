@@ -16,22 +16,27 @@ export default function TickerInput({ onSearch, loading }: Props) {
     };
 
     return (
-        <div className="w-full max-w-lg mx-auto mb-8">
-            <form onSubmit={handleSubmit} className="relative">
+        <div className="w-full max-w-xl mx-auto">
+            <form onSubmit={handleSubmit} className="relative group">
+                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="ENTER TICKER (e.g. AAPL)"
-                    className="w-full bg-slate-800 border-2 border-slate-700 text-slate-100 placeholder-slate-500 text-lg px-6 py-4 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all font-mono tracking-wider"
+                    placeholder="Enter ticker (e.g. AAPL)"
+                    className="w-full relative z-10 bg-surface border border-white/10 text-white placeholder-muted text-lg px-8 py-5 rounded-2xl focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-sans shadow-xl"
                     disabled={loading}
                 />
                 <button
                     type="submit"
                     disabled={loading}
-                    className="absolute right-2 top-2 bottom-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="absolute right-3 top-3 bottom-3 bg-white/5 hover:bg-white/10 text-primary font-medium px-6 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-95 active:scale-90"
                 >
-                    {loading ? 'SCANNING...' : 'HUNT'}
+                    {loading ? (
+                        <span className="animate-pulse">Scanning...</span>
+                    ) : (
+                        <span>→</span>
+                    )}
                 </button>
             </form>
         </div>

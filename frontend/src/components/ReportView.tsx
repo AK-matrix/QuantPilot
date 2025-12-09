@@ -1,32 +1,35 @@
-
 interface Props {
     report: any;
 }
 
 export default function ReportView({ report }: Props) {
     return (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-8 animate-fade-in-up">
             {/* Executive Summary */}
-            <section className="bg-slate-800 rounded-lg p-6 border-l-4 border-emerald-500">
-                <h2 className="text-xl font-bold text-slate-200 mb-4 uppercase tracking-widest">Executive Summary</h2>
-                <p className="text-slate-300 leading-relaxed font-mono">
+            <section className="bg-surface rounded-2xl p-8 border border-white/5 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-primary/50"></div>
+                <h2 className="text-2xl font-serif text-white mb-6">Executive Summary</h2>
+                <p className="text-secondary leading-relaxed font-sans text-lg opacity-90">
                     {report.executive_summary}
                 </p>
             </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Fundamentals */}
-                <section className="bg-slate-800 rounded-lg p-6">
-                    <h2 className="text-xl font-bold text-slate-200 mb-4 border-b border-slate-700 pb-2">FUNDAMENTALS</h2>
-                    <div className="space-y-3 font-mono text-sm">
+                <section className="bg-surface rounded-2xl p-8 border border-white/5 shadow-lg">
+                    <h2 className="text-xl font-serif text-white mb-6 flex items-center gap-3">
+                        <span className="text-primary opacity-70">◆</span>
+                        Fundamentals
+                    </h2>
+                    <div className="space-y-4 font-sans text-sm">
                         <Row label="Market Cap" value={formatNum(report.fundamentals.market_cap)} />
                         <Row label="P/E Ratio" value={report.fundamentals.pe_ratio} />
-                        <Row label="ROE" value={report.fundamentals.roe} />
-                        <Row label="Profit Margin" value={report.fundamentals.profit_margins} />
+                        <Row label="ROE" value={report.fundamentals.roe ? (report.fundamentals.roe * 100).toFixed(2) + '%' : '-'} />
+                        <Row label="Profit Margin" value={report.fundamentals.profit_margins ? (report.fundamentals.profit_margins * 100).toFixed(2) + '%' : '-'} />
 
-                        <div className="mt-4 pt-4 border-t border-slate-700">
-                            <h3 className="text-emerald-400 font-bold mb-2">Analysis:</h3>
-                            <ul className="list-disc pl-4 text-slate-400">
+                        <div className="mt-6 pt-6 border-t border-white/5">
+                            <h3 className="text-white/80 font-medium mb-3">Analysis</h3>
+                            <ul className="space-y-2 text-muted list-disc pl-4">
                                 {report.fundamentals.analysis_summary?.map((pt: string, i: number) => (
                                     <li key={i}>{pt}</li>
                                 ))}
@@ -36,16 +39,19 @@ export default function ReportView({ report }: Props) {
                 </section>
 
                 {/* Technicals */}
-                <section className="bg-slate-800 rounded-lg p-6">
-                    <h2 className="text-xl font-bold text-slate-200 mb-4 border-b border-slate-700 pb-2">TECHNICALS</h2>
-                    <div className="space-y-3 font-mono text-sm">
+                <section className="bg-surface rounded-2xl p-8 border border-white/5 shadow-lg">
+                    <h2 className="text-xl font-serif text-white mb-6 flex items-center gap-3">
+                        <span className="text-primary opacity-70">⚡</span>
+                        Technicals
+                    </h2>
+                    <div className="space-y-4 font-sans text-sm">
                         <Row label="Current Price" value={report.technicals.current_price?.toFixed(2)} />
                         <Row label="RSI (14)" value={report.technicals.rsi?.toFixed(2)} />
                         <Row label="Trend" value={report.technicals.trend} highlight={true} />
 
-                        <div className="mt-4 pt-4 border-t border-slate-700">
-                            <h3 className="text-emerald-400 font-bold mb-2">Signals:</h3>
-                            <ul className="list-disc pl-4 text-slate-400">
+                        <div className="mt-6 pt-6 border-t border-white/5">
+                            <h3 className="text-white/80 font-medium mb-3">Signals</h3>
+                            <ul className="space-y-2 text-muted list-disc pl-4">
                                 {report.technicals.signals?.map((sig: string, i: number) => (
                                     <li key={i}>{sig}</li>
                                 ))}
@@ -56,29 +62,30 @@ export default function ReportView({ report }: Props) {
             </div>
 
             {/* Risks */}
-            <section className="bg-slate-800 rounded-lg p-6 border-l-4 border-red-500">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-slate-200 uppercase tracking-widest">Risk Analysis</h2>
-                    <span className="bg-red-900/50 text-red-200 px-3 py-1 rounded font-mono text-sm">
-                        Score: {report.risks.risk_score}
+            <section className="bg-surface rounded-2xl p-8 border border-white/5 shadow-lg">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-serif text-white flex items-center gap-3">
+                        <span className="text-primary opacity-70">⚠</span>
+                        Risk Analysis
+                    </h2>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${report.risks.risk_score > 50 ? 'bg-red-500/20 text-red-200' : 'bg-green-500/20 text-green-200'
+                        }`}>
+                        Risk Score: {report.risks.risk_score}
                     </span>
                 </div>
 
                 {report.risks.alerts?.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {report.risks.alerts.map((alert: any, i: number) => (
-                            <div key={i} className="bg-red-900/10 p-3 rounded flex items-start gap-3">
-                                <span className="text-red-400 text-xl">⚠</span>
-                                <div>
-                                    <div className="font-bold text-red-200">{alert.type}</div>
-                                    <div className="text-sm text-red-300">{alert.keyword || alert.message}</div>
-                                    {alert.title && <div className="text-xs text-slate-500 mt-1">{alert.title}</div>}
-                                </div>
+                            <div key={i} className="bg-background/50 p-4 rounded-xl border border-white/5">
+                                <div className="font-medium text-primary mb-1">{alert.type}</div>
+                                <div className="text-sm text-secondary opacity-80">{alert.keyword || alert.message}</div>
+                                {alert.title && <div className="text-xs text-muted mt-2 line-clamp-1">{alert.title}</div>}
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p className="text-slate-500 italic">No significant risk factors detected in recent news.</p>
+                    <p className="text-muted italic">No specific risk signals detected in recent news flow.</p>
                 )}
             </section>
         </div>
@@ -88,9 +95,9 @@ export default function ReportView({ report }: Props) {
 function Row({ label, value, highlight = false }: { label: string, value: any, highlight?: boolean }) {
     if (value === undefined || value === null) return null;
     return (
-        <div className="flex justify-between">
-            <span className="text-slate-500">{label}</span>
-            <span className={highlight ? "text-emerald-400 font-bold" : "text-slate-300"}>
+        <div className="flex justify-between items-center group hover:bg-white/5 p-2 rounded transition-colors -mx-2">
+            <span className="text-muted">{label}</span>
+            <span className={highlight ? "text-primary font-medium" : "text-secondary font-medium"}>
                 {value}
             </span>
         </div>
