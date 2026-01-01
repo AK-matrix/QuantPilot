@@ -1,4 +1,4 @@
-# ProofQuant
+# ProofQuant (In Progress)
 
 QuantPilot is a research system for public equities that refuses to guess. 
 Give it a stock ticker and it builds a structured, source-backed report that combines fundamentals, technicals, and real-world events into a single, coherent narrative.
